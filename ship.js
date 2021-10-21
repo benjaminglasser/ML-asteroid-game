@@ -1,14 +1,25 @@
 class Ship {
     constructor() {
         this.pos = createVector(width / 2, height / 2)
-        this.r = 20
+        // this.r = 20
     }
 
     show(_x, _y) {
-        fill(255)
+        // fill(255)
+        push()
+        fill(0, 0)
+        stroke(255)
         this.pos.x = _x
         this.pos.y = _y
-        circle(this.pos.x, this.pos.y, this.r * 2)
+
+        beginShape()
+        vertex(this.pos.x - 20, this.pos.y - 10)
+        vertex(this.pos.x + 20, this.pos.y)
+        vertex(this.pos.x - 20, this.pos.y + 10)
+
+        // circle(this.pos.x, this.pos.y, this.r * 2)
+        endShape(CLOSE)
+        pop()
     }
 
     // move() {
@@ -30,17 +41,17 @@ class Ship {
     // }
 
     checkBorders() {
-        if (this.pos.x - this.r <= 0) {
-            this.pos.x = this.r
+        if (this.pos.x <= 0) {
+            this.pos.x = 0
         }
-        if (this.pos.x + this.r >= width) {
-            this.pos.x = width - this.r
+        if (this.pos.x >= width) {
+            this.pos.x = width
         }
-        if (this.pos.y - this.r <= 0) {
-            this.pos.y = this.r
+        if (this.pos.y <= 0) {
+            this.pos.y = 0
         }
-        if (this.pos.y + this.r >= height) {
-            this.pos.y = height - this.r
+        if (this.pos.y >= height) {
+            this.pos.y = height
         }
     }
 

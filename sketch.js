@@ -9,6 +9,10 @@ let pose;
 let opacity;
 let opacitySlider;
 let classifier;
+let inc = 0.01
+let start = 0
+let terrain;
+let bg;
 
 // Teachable Machine model URL:
 let soundModel = 'https://teachablemachine.withgoogle.com/models/fmups_mbN/';
@@ -20,7 +24,7 @@ function preload() {
 
 function setup() {
   createCanvas(700, 500);
-  opacitySlider = createSlider(0, 255, 200, 1)
+  opacitySlider = createSlider(0, 255, 255, 1)
   video = createCapture(VIDEO)
   video.size(width, height)
   video.hide();
@@ -28,23 +32,30 @@ function setup() {
   poseNet.on('pose', gotPoses);
   classifier.classify(gotResult);
   ship = new Ship()
+  terrain = new Terrain()
+  bg = new BG()
+  angleMode(DEGREES)
   resetSketch()
-
-
 }
 
 function draw() {
   opacity = opacitySlider.value()
-  flippedVideo = ml5.flipImage(video);
-  image(flippedVideo, 0, 0, width, height)
-  background(0, 0, 0, opacity)
+  flippedVideo = ml5.flipImage(video); ``
+  // image(flippedVideo, 0, 0, width, height)
+  background(0, 50)
+  bg.show()
+  terrain.show(inc, start)
+  noStroke()
+
   if (pose) {
     // ship = new Ship(pose.nose.x, pose.nose.y)
     ship.show(pose.nose.x, pose.nose.y)
     // ship.move(pose.nose.x, pose.nose.y)
     ship.checkBorders()
 
-
+    if (terrain.checkHit(ship)) {
+      resetSketch()
+    }
 
     asteroids.forEach((a) => {
       a.show()
@@ -76,7 +87,7 @@ function draw() {
   fill(255)
   textSize(32)
   text(score, width / 2, 50)
-
+  start += inc
 
 
 
